@@ -24,8 +24,6 @@ const RevealLayer: React.FC<RevealLayerProps> = ({ image, active }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const revealDivRef = useRef<HTMLDivElement | null>(null);
   const [dims, setDims] = useState({ w: 0, h: 0 });
-  
-  // Controls layer visibility so image 2 stays hidden until intentional mouse interaction
   const [mouseMoved, setMouseMoved] = useState(false);
 
   const mouse = useRef({ x: -9999, y: -9999 });
@@ -45,7 +43,7 @@ const RevealLayer: React.FC<RevealLayerProps> = ({ image, active }) => {
       if (!hasMovedYet.current) {
         smooth.current = { x: e.clientX, y: e.clientY };
         hasMovedYet.current = true;
-        setMouseMoved(true); // Makes the layer visible only when interaction begins
+        setMouseMoved(true);
       }
       mouse.current = { x: e.clientX, y: e.clientY };
     };
@@ -136,8 +134,8 @@ const RevealLayer: React.FC<RevealLayerProps> = ({ image, active }) => {
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           pointerEvents: 'none',
-          opacity: mouseMoved ? 1 : 0, // Enforces absolute invisibility until cursor moves
-          transition: 'opacity 0.4s ease' // Smooth presentation fade-in for the spotlight circle
+          opacity: mouseMoved ? 1 : 0,
+          transition: 'opacity 0.4s ease'
         }}
       />
     </>
@@ -159,7 +157,6 @@ export default function LithosHero() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'expo.inOut' } });
 
-      // Stage 1: Image 1 moves forward into position
       tl.fromTo(imageFrameRef.current, 
         { 
           scale: 0.45, 
@@ -172,18 +169,16 @@ export default function LithosHero() {
           opacity: 1, 
           borderRadius: '0px',
           duration: 2.2,
-          onComplete: () => setIntroFinished(true) // Activates background tracking once stable
+          onComplete: () => setIntroFinished(true)
         }
       );
 
-      // Stage 2: Interface frame presentation
       tl.fromTo(navbarRef.current,
         { y: -30, opacity: 0 },
         { y: 0, opacity: 1, duration: 1.0, ease: 'power4.out' },
         "-=0.3"
       );
 
-      // Stage 3: Narrative layouts entry
       tl.fromTo([textLine1Ref.current, textLine2Ref.current],
         { y: 40, opacity: 0, filter: 'blur(8px)' },
         { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.2, stagger: 0.15, ease: 'power4.out' },
@@ -201,18 +196,38 @@ export default function LithosHero() {
   }, []);
 
   return (
-    <div ref={containerRef} style={{ minHeight: '100vh', backgroundColor: '#000000', letterSpacing: '-0.02em', fontFamily: "'Inter', sans-serif", overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ minHeight: '100vh', backgroundColor: '#000000', letterSpacing: '-0.02em', fontFamily: "'Inter', sans-serif" }}>
       
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap');
         
+        html {
+          scroll-behavior: smooth;
+        }
+
         html, body {
           margin: 0 !important;
           padding: 0 !important;
           width: 100% !important;
-          height: 100% !important;
           background-color: #000000 !important;
-          overflow: hidden;
+          overflow-x: hidden !important; /* Restores vertical travel */
+        }
+
+        /* Premium ChatGPT Dark Scrollbar UI */
+        ::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #000000 !important;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #2a2a2a !important;
+          border-radius: 9999px !important;
+          border: 2px solid #000000 !important;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #424242 !important;
         }
 
         .font-playfair-italic {
@@ -226,12 +241,12 @@ export default function LithosHero() {
         .nav-cta { display: none !important; }
         .nav-burger { display: block !important; }
         .bottom-left-txt { display: none !important; }
-        .bottom-right-container { left: 1.25rem; right: 1.25rem; width: auto; bottom: 2.5rem; }
+        .bottom-right-container { left: 1.25rem; right: 1.25rem; width: auto; bottom: 1.5rem; }
 
         @media (min-width: 640px) {
           .responsive-heading { font-size: 4.8rem; }
           .bottom-left-txt { display: block !important; }
-          .bottom-right-container { left: auto !important; right: 2.5rem !important; width: 260px !important; bottom: 6rem !important; }
+          .bottom-right-container { left: auto !important; right: 2.5rem !important; width: 260px !important; bottom: 3.5rem !important; }
         }
         @media (min-width: 768px) {
           .responsive-heading { font-size: 6rem; }
@@ -280,10 +295,9 @@ export default function LithosHero() {
         </div>
       </nav>
 
-      {/* Main Screen Container Frame */}
+      {/* Hero Box Container */}
       <section style={{ height: '100dvh', width: '100vw', position: 'relative', overflow: 'hidden', backgroundColor: '#000000' }}>
         
-        {/* Layer 1: Base Crust Image */}
         <div 
           ref={imageFrameRef}
           style={{ 
@@ -299,11 +313,9 @@ export default function LithosHero() {
           }} 
         />
 
-        {/* Layer 2: Mask Spotlight Reveal Layer */}
         <RevealLayer image={BG_IMAGE_2} active={introFinished} />
 
-        {/* Layer 3: Central Cinematic Typography */}
-        <div style={{ ...layerPromotionStyles, position: 'absolute', top: '14%', left: 0, right: 0, zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', paddingLeft: '1.25rem', paddingRight: '1.25rem', pointerEvents: 'none' }}>
+        <div style={{ ...layerPromotionStyles, position: 'absolute', top: '21%', left: 0, right: 0, zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', paddingLeft: '1.25rem', paddingRight: '1.25rem', pointerEvents: 'none' }}>
           <h1 style={{ color: '#ffffff', margin: 0, padding: 0, lineHeight: 0.95, fontWeight: 'normal' }}>
             <span 
               ref={textLine1Ref}
@@ -332,7 +344,6 @@ export default function LithosHero() {
           </h1>
         </div>
 
-        {/* Layer 4: Descriptive Subtext (Bottom Left) */}
         <div 
           ref={descLeftRef}
           className="bottom-left-txt" 
@@ -351,7 +362,6 @@ export default function LithosHero() {
           </p>
         </div>
 
-        {/* Layer 5: Call To Action Layout (Bottom Right) */}
         <div 
           ref={descRightRef}
           className="bottom-right-container" 
