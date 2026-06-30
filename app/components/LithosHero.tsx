@@ -271,12 +271,12 @@ export default function LithosHero() {
           <svg style={{ width: '26px', height: '26px' }} viewBox="0 0 256 256" fill="#ffffff">
             <path d="M 256 256 L 128 256 L 0 128 L 128 128 Z M 256 128 L 128 128 L 0 0 L 128 0 Z" />
           </svg>
-          <span className="font-playfair-italic" style={{ color: '#ffffff', fontSize: '1.5rem', userSelect: 'none' }}>Lithos</span>
+          <span className="font-playfair-italic" style={{ color: '#ffffff', fontSize: '1.5rem', userSelect: 'none' }}>Calyx</span>
         </div>
 
         <div className="nav-pill" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', border: '1px solid rgba(255, 255, 255, 0.3)', borderRadius: '9999px', padding: '0.5rem', alignItems: 'center', gap: '0.25rem' }}>
           <button style={{ color: '#ffffff', backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: '0.375rem 1rem', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 500, border: 'none', cursor: 'pointer' }}>
-            Course
+            Home
           </button>
           {['Field Guides', 'Geology', 'Plans', 'Live Tour'].map((item) => (
             <button key={item} style={{ color: 'rgba(255, 255, 255, 0.8)', padding: '0.375rem 1rem', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 500, border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }}>
@@ -287,7 +287,7 @@ export default function LithosHero() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button className="nav-cta" style={{ backgroundColor: '#ffffff', color: '#111827', fontSize: '0.875rem', fontWeight: 600, padding: '0.625rem 1.5rem', borderRadius: '9999px', border: 'none', cursor: 'pointer' }}>
-            Sign Up
+            LIVE MAP
           </button>
           <button className="nav-burger" style={{ color: '#ffffff', background: 'transparent', border: 'none', cursor: 'pointer', padding: '0.25rem' }} aria-label="Toggle Menu">
             <Menu style={{ width: '24px', height: '24px' }} />
